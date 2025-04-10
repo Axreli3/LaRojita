@@ -1,0 +1,28 @@
+---
+import { getCollection, render } from "astro:content"
+import Layout from "../layouts/Layout.astro";
+
+export async function getStaticPaths() {
+  const terms = await getCollection("terms");
+  
+  return terms.map((terms) => ({
+    params: { id: terms.slug },
+    props: { terms },
+  }))
+}
+
+const { terms } = Astro.props
+const { data } = terms
+const { title, ultimaActualización, description} = data
+
+const { Content } = await render(terms)
+---
+<Layout title={title}>
+    <div class="max-w-screen-sm mx-auto">
+        <h2 class="flex text-black">{title}</h2>
+        <p class="">{ultimaActualización}</p>
+        <div class="w-full">
+            <Content />
+        </div>
+    </div>
+</Layout>
